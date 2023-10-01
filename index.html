@@ -13,25 +13,40 @@
     <form name="add-new-user" class="flow" novalidate>
       <h2>Add new user</h2>
       <div class="form-input">
-        <label for="userName"> User name</label>
+        <!-- <label for="userName"></label> -->
         <input
           type="text"
           name="userName"
           id="user-name"
           inputmode="latin-name"
+          placeholder="User name"
           required />
       </div>
       <div class="form-input">
-        <label for="userEmail">Email</label>
-        <input type="userEmail" id="email" name="email" required />
+        <!-- <label for="userEmail">Email</label> -->
+        <input
+          type="userEmail"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required />
       </div>
       <div class="form-input">
-        <label for="userPassword">Password</label>
-        <input type="text" id="user-password" name="userPassword" required />
+        <!-- <label for="userPassword"></label> -->
+        <input
+          type="text"
+          id="user-password"
+          placeholder="Password"
+          name="userPassword"
+          required />
       </div>
       <div class="form-input">
-        <label for="passwordComfirmation"> Confirm password</label>
-        <input type="text" id="confirm-password" name="passwordComfirmation" />
+        <!-- <label for="passwordComfirmation"> Confirm password</label> -->
+        <input
+          type="text"
+          id="confirm-password"
+          placeholder="Confirm password"
+          name="passwordComfirmation" />
       </div>
       <button type="submit">Register</button>
     </form>

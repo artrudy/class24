@@ -5,22 +5,21 @@ class InvalidEmailError extends Error {
 class InvalidPasswordError extends Error {
 }
 const users = [];
-const addUserFrom = document.querySelector("form[name='add-new-user']");
-if (!addUserFrom) {
-    console.error("Could't find and add user.");
-}
-else {
-    addUserFrom.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        users.push({
-            userName: getRequiredString(formData, "userName"),
-            userEmail,
-            userPassword,
-            passwordConfirmation,
-        });
-    });
-}
+// const addUserFrom = document.querySelector("form[name='add-new-user']");
+// if (!addUserFrom) {
+//   console.error("Could't find and add user.");
+// } else {
+//   addUserFrom.addEventListener("submit", function (e) {
+//     e.preventDefault();
+//     const formData = new FormData(e.target as HTMLFormElement);
+//     users.push({
+//       userName,
+//       userEmail,
+//       userPassword,
+//       passwordConfirmation,
+//     });
+//   });
+// }
 function register(userName, userEmail, userPassword, passwordConfirmation) {
     if (users.some((user) => user.userName === userName)) {
         throw new InvalidUsernameError(`Username ${userName} already taken`);
