@@ -1,3 +1,5 @@
+import { register } from "../../node_modules/ts-node/dist/index";
+
 interface HTMLFormControlsCollection {
   [namedControl: string]: HTMLElement | null;
 }
@@ -21,109 +23,86 @@ type UserArray = User[];
 
 const users: UserArray = [];
 
-// const addUserForm = document.querySelector("form[name='add-new-user']");
+/*
 
-const addUserFormId = document.getElementById("add-user");
+1 way
 
-console.log(addUserFormId);
+*/
 
-// console.log(addUserForm);
+const addUserFromForm = document.querySelector("form[name='add-new-user']");
+if (!addUserFromForm) {
+  console.error("Could't find and add user.");
+} else {
+  addUserFromForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-function onSubmit(e) {
-  e.preventDefault();
+    const userDataFromForm1 = new FormData(e.target as HTMLFormElement);
 
-  // const userDataFormForm = new FormData(addUserFormId);
+    const userName = userDataFromForm1.get("userName");
 
-  // const userNameFromForm = userDataFormForm.get("userName");
+    console.log("userName", userName);
 
-  const userDataFromForm1 = new FormData(e.target as HTMLFormElement);
+    const userEmail = userDataFromForm1.get("userEmail");
 
-  console.log("userDataFromForm1", userDataFromForm1);
+    console.log("userEmail", userEmail);
 
-  const userNameFromForm = userDataFromForm1.get("userName");
+    const userPassword = userDataFromForm1.get("userPassword");
 
-  console.log("userNameFromForm", userNameFromForm);
+    console.log("userPassword", userPassword);
 
-  const userEmailFromFrom = userDataFromForm1.get("email");
+    const passwordConfirmation = userDataFromForm1.get("passwordComfirmation");
 
-  console.log("userEmailFromFrom", userEmailFromFrom);
+    console.log("passwordConfirmation", passwordConfirmation);
 
-  const userPasswordFromForm = userDataFromForm1.get("userPassword");
+    try {
+      register(userName, userEmail, userPassword, passwordConfirmation);
+    } catch (error) {
+      if (
+        !(
+          error instanceof InvalidEmailError ||
+          error instanceof InvalidUsernameError ||
+          error instanceof InvalidPasswordError
+        )
+      ) {
+        throw error;
+      }
 
-  console.log("userPasswordFromForm", userPasswordFromForm);
-
-  const userPasswordConfirmationFromFormData = userDataFromForm1.get(
-    "passwordComfirmation"
-  );
-
-  console.log(
-    "userPasswordConfirmationFromFormData",
-    userPasswordConfirmationFromFormData
-  );
-
-  users.push({
-    userNameFromForm,
-    userEmailFromFrom,
-    userPasswordFromForm,
-    userPasswordConfirmationFromFormData,
+      alert(error.message);
+    }
   });
-
-  console.log(userDataFromForm1.get("userName"));
-
-  console.log(users);
-
-  // console.log(userNameFromForm);
 }
 
-addUserFormId?.addEventListener("submit", onSubmit);
+/*
 
-// const addUserFrom = document.querySelector("form[name='add-new-user']");
-// if (!addUserFrom) {
-//   console.error("Could't find and add user.");
-// } else {
-//   addUserFrom.addEventListener("submit", function (e) {
-//     e.preventDefault();
+regular way
 
-//     const formData = new FormData(e.target as HTMLFormElement);
 
-// users.push({
-//   userName,
-//   userEmail,
-//   userPassword,
-//   passwordConfirmation,
-// });
-//   });
-// }
+*/
 
-// function register(
-//   userName: string,
-//   userEmail: string,
-//   userPassword: string,
-//   passwordConfirmation: string
-// ) {
-//   if (users.some((user) => user.userName === userName)) {
-//     throw new InvalidUsernameError(`Username ${userName} already taken`);
-//   }
+// const addUserFormId = document.getElementById("add-user");
 
-//   if (!userEmail.includes("@")) {
-//     throw new InvalidEmailError(`Invalid email: ${userEmail}`);
-//   }
+// console.log(addUserFormId);
 
-//   if (userPassword === passwordConfirmation) {
-//     throw new InvalidPasswordError(
-//       `Password: ${userPassword} is not the same is confirmPassword: ${passwordConfirmation}`
-//     );
-//   }
+// function onSubmit(e) {
+//   e.preventDefault();
 
-//   if (
-//     !userPassword.match(
-//       /^(?=^[ -~]{6,64}$)(?=.*([a-z][A-Z]))(?=.*[0-9])(.*[ -/|:-@|\[-`|{-~]).+$/
-//     )
-//   ) {
-//     throw new InvalidPasswordError(
-//       "Password must contain: min 6 and max 64 characters, min 1 lowercase character, min 1 uppercase character, min 1 number and min 1 special characters"
-//     );
-//   }
+//   const userDataFromForm = new FormData(addUserFormId);
+
+//   const userName = userDataFromForm.get("userName");
+
+//   console.log("userName", userName);
+
+//   const userEmail = userDataFromForm.get("email");
+
+//   console.log("userEmail", userEmail);
+
+//   const userPassword = userDataFromForm.get("userPassword");
+
+//   console.log("userPassword", userPassword);
+
+//   const passwordConfirmation = userDataFromForm.get("passwordComfirmation");
+
+//   console.log("passwordConfirmation", passwordConfirmation);
 
 //   users.push({
 //     userName,
@@ -131,7 +110,102 @@ addUserFormId?.addEventListener("submit", onSubmit);
 //     userPassword,
 //     passwordConfirmation,
 //   });
+
+//   console.log(users);
 // }
+
+// addUserFormId?.addEventListener("submit", onSubmit);
+
+/*
+
+
+simplest way
+
+
+*/
+
+// const userDataForm = document.getElementById("add-user");
+// console.log(userDataForm);
+
+// function onSubmit(e) {
+//   e.preventDefault();
+//   console.log("bingo");
+
+//   const userName = document.getElementById("user-name").value;
+
+//   console.log("userName", userName);
+
+//   const userEmail = document.getElementById("email").value;
+
+//   const userPassword = document.getElementById("user-password").value;
+
+//   const passwordConfirmation =
+//     document.getElementById("confirm-password").value;
+
+//   users.push({
+//     userName,
+//     userEmail,
+//     userPassword,
+//     passwordConfirmation,
+//   });
+//   console.log(users);
+// }
+
+// userDataForm?.addEventListener("submit", onSubmit);
+
+function register(
+  userName: string,
+  userEmail: string,
+  userPassword: string,
+  passwordConfirmation: string
+) {
+  // if (users.some((user) => user.userName === userName)) {
+  //   throw new InvalidUsernameError(`Username ${userName} already taken`);
+  // }
+
+  if (localStorage.getItem(`${userName}`) !== null) {
+    throw new InvalidUsernameError(`Username ${userName} already taken`);
+  }
+
+  if (!userEmail.includes("@")) {
+    throw new InvalidEmailError(`Invalid email: ${userEmail}`);
+  }
+
+  if (userPassword !== passwordConfirmation) {
+    throw new InvalidPasswordError(
+      `Password: ${userPassword} is not the same is confirmPassword: ${passwordConfirmation}`
+    );
+  }
+
+  const regexToCheckPassword: RegExp =
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+
+  console.log(userPassword.match(regexToCheckPassword));
+
+  if (!userPassword.match(regexToCheckPassword)) {
+    throw new InvalidPasswordError(
+      "Password must contain: min 6 and max 64 characters, min 1 lowercase character, min 1 uppercase character, min 1 number"
+    );
+  }
+
+  localStorage.setItem(
+    `${userName}`,
+    JSON.stringify({
+      userName,
+      userEmail,
+      userPassword,
+      passwordConfirmation,
+    })
+  );
+
+  users.push({
+    userName,
+    userEmail,
+    userPassword,
+    passwordConfirmation,
+  });
+  console.log(users);
+}
 
 // try {
 //   register("omer", "omer@gmail", "", "");
